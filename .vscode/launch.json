@@ -11,6 +11,15 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "Python: viola",
+            "type": "python",
+            "request": "launch",
+            "program": "viola/viola.py",
+            "args": "stories/LostPig.zblorb",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }

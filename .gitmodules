@@ -1,6 +1,3 @@
-[submodule "viola"]
-	path = viola
-	url = https://github.com/DFillmore/viola
-[submodule "zvm"]
-	path = zvm
-	url = https://github.com/sussman/zvm
+[submodule "xyppy"]
+	path = xyppy
+	url = https://github.com/theinternetftw/xyppy
