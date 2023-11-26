@@ -13,11 +13,12 @@
             "justMyCode": true
         },
         {
-            "name": "Python: viola",
+            "name": "Python: xyppy",
             "type": "python",
+            "cwd": "/Users/ivalyaev/Documents/Git/IFFBot/xyppy",
             "request": "launch",
-            "program": "viola/viola.py",
-            "args": "stories/LostPig.zblorb",
+            "program": "-m xyppy",
+            "args": "../stories/LostPig.zblorb",
             "console": "integratedTerminal",
             "justMyCode": true
         }

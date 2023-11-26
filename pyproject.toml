@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "iffbot"
+version = "0.1.0"
+description = ""
+authors = ["ValIlya <valyaev.ilya@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+python-telegram-bot = "^20.6"
+deep-translator = "^1.11.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+bot = "iffbot.bot:main"
