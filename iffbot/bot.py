@@ -21,7 +21,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     info = storage.get_user_info(context._chat_id)
     if info.story.is_running():
         return
-    message = info.story.start()
+    message = await info.story.start()
     translated = GoogleTranslator(source="en", target=info.language).translate(message)
     await update.message.reply_text(translated)
 
@@ -29,13 +29,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def game_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     try:
         info = storage.get_user_info(context._chat_id)
-        message = info.story.do(update.message.text)
+        message = await info.story.do(update.message.text)
         translated = GoogleTranslator(source="en", target=info.language).translate(
             message
         )
         await update.message.reply_text(translated)
     except:
-        start()
+        await start()
 
 
 async def lang_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

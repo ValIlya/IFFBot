@@ -1,6 +1,11 @@
+import asyncio
+import io
+from queue import Queue
 from subprocess import Popen, PIPE
 
 import os
+from threading import Thread
+from asyncio import sleep
 from typing import Tuple
 
 
@@ -20,32 +25,41 @@ class DFrotz:
         self.game = game
         self.savefile = savefile
         self.dfrotz_args = dfrotz_args
-        self.process = None
         self.break_char = ">"
+        self.process = None
+        self.reading_thread = None
+        self.output_queue = Queue()
+        self.output_delay = 0.1
 
-    def start(self) -> str:
+    async def start(self) -> str:
         self.process = Popen(
             [self.dfrotz, *self.dfrotz_args, self.game],
             stdin=PIPE,
             stdout=PIPE,
         )
-        return self.read_output()
+        self.reading_thread = Thread(
+            target=self._read_output, args=(self.process.stdout, self.output_queue)
+        )
+        self.reading_thread.start()
+        return await self.read_output()
 
     def is_running(self) -> bool:
         return self.process != None
 
-    def read_output(self):
+    @staticmethod
+    def _read_output(output: io.BufferedReader, queue: Queue):
+        for line in iter(output.readline, b""):
+            queue.put(line.decode())
+        output.close()
+
+    async def read_output(self):
+        await sleep(self.output_delay)
         res = []
-        while True:
-            char = self.process.stdout.read(1).decode()
-            if not char:
-                break
-            if char == self.break_char:
-                break
-            res.append(char)
+        while not self.output_queue.empty():
+            res.append(self.output_queue.get())
         return "".join(res)
 
-    def do(self, command: str) -> str:
+    async def do(self, command: str) -> str:
         """
         pipe command to frotz
 
@@ -61,7 +75,7 @@ class DFrotz:
 
         self._exec(command)
         print(command)
-        return self.read_output()
+        return await self.read_output()
 
     def _exec(self, command: str):
         self.process.stdin.write((command + "\n").encode())
@@ -88,7 +102,8 @@ if __name__ == "__main__":
         game="stories/LostPig.zblorb",
         savefile="a.save",
     )
-    print(game.start())
-    print(game.do("save"))
-    print(game.do("e"))
-    print(game.do("look around"))
+    loop = asyncio.get_event_loop()
+    print(loop.run_until_complete(game.start()))
+    print(loop.run_until_complete(game.do("save")))
+    print(loop.run_until_complete(game.do("e")))
+    print(loop.run_until_complete(game.do("look around")))
