@@ -19,3 +19,7 @@ echo "<telegram-token>" > .token
 poetry run bot
 ```
 
+### Tests
+```shell
+poetry run pytest test
+```

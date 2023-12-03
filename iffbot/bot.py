@@ -1,12 +1,15 @@
-from telegram import Update
+from telegram import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Update,
+)
 from telegram.ext import (
     ApplicationBuilder,
-    CommandHandler,
+    CallbackQueryHandler,
     ContextTypes,
     MessageHandler,
     filters,
 )
-from deep_translator import GoogleTranslator
 
 
 from iffbot.storage import Storage
@@ -17,43 +20,31 @@ with open(".token") as f:
 storage = Storage()
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    info = storage.get_user_info(context._chat_id)
-    if info.story.is_running():
-        return
-    message = await info.story.start()
-    translated = GoogleTranslator(source="en", target=info.language).translate(message)
-    await update.message.reply_text(translated)
-
-
 async def game_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    try:
-        info = storage.get_user_info(context._chat_id)
-        message = await info.story.do(update.message.text)
-        translated = GoogleTranslator(source="en", target=info.language).translate(
-            message
-        )
-        await update.message.reply_text(translated)
-    except:
-        await start()
+    story = storage.get_user_story(context._chat_id)
+    message = await story.do(update.message.text)
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                story.translator.translate("Translate"), callback_data="/traslate"
+            )
+        ],
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text(message, reply_markup=reply_markup)
 
 
-async def lang_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    info = storage.get_user_info(context._chat_id)
-    lang = context.args[0]
-    info.language = lang
-    message = f"Set language to '{lang}'"
-    translated = GoogleTranslator(source="en", target=lang).translate(message)
-    await update.message.reply_text(translated)
+async def translate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    story = storage.get_user_story(context._chat_id)
+    query = update.callback_query
+    await query.answer()
+    await query.message.reply_text(story.translator.translate(query.message.text))
 
 
 def main():
     app = ApplicationBuilder().token(token).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("lang", lang_command))
     app.add_handler(MessageHandler(filters.ALL, game_command))
-
+    app.add_handler(CallbackQueryHandler(translate))
     app.run_polling()
 
 

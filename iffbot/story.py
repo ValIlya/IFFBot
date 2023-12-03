@@ -19,7 +19,7 @@ class DFrotz:
         game: str,
         savefile: str,
         dfrotz: str = "bin/dfrotz",
-        dfrotz_args: Tuple[str] = ("-w100",),
+        dfrotz_args: Tuple[str] = ("-w1000",),
     ):
         self.dfrotz = dfrotz
         self.game = game
@@ -94,16 +94,3 @@ class DFrotz:
             self._exec(self.savefile)
             self.process.stdout.flush()
             return "saved"
-
-
-if __name__ == "__main__":
-    game = DFrotz(
-        dfrotz="bin/dfrotz",
-        game="stories/LostPig.zblorb",
-        savefile="a.save",
-    )
-    loop = asyncio.get_event_loop()
-    print(loop.run_until_complete(game.start()))
-    print(loop.run_until_complete(game.do("save")))
-    print(loop.run_until_complete(game.do("e")))
-    print(loop.run_until_complete(game.do("look around")))
