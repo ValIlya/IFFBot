@@ -53,7 +53,9 @@ class DFrotz:
         output.close()
 
     async def read_output(self):
-        await sleep(self.output_delay)
+        await sleep(self.output_delay / 2)
+        self.process.stdout.flush()
+        await sleep(self.output_delay / 2)
         res = []
         while not self.output_queue.empty():
             res.append(self.output_queue.get())
@@ -69,9 +71,9 @@ class DFrotz:
         """
         if not self.is_running():
             return "start the game first"
-        output = self._special_commands(command)
-        if output:
-            return output
+        # output = self._special_commands(command)
+        # if output:
+        #     return output
 
         self._exec(command)
         print(command)

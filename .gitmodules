@@ -1,3 +1,6 @@
 [submodule "frotz"]
 	path = frotz
 	url = https://gitlab.com/DavidGriffith/frotz
+[submodule "cheapglk"]
+	path = cheapglk
+	url = https://github.com/erkyrath/cheapglk
