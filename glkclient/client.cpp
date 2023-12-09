@@ -21,12 +21,9 @@ glkunix_argumentlist_t glkunix_arguments[] = {
 
 int glkunix_startup_code(glkunix_startup_t *data)
 {
-
-
     auto game = const_cast<char *>("../stories/LostPig.zblorb");
 
     {
-        giblorb_result_t res;
         giblorb_map_t *basemap;
 
         auto file = glkunix_stream_open_pathname(game, 1, 0);
@@ -46,8 +43,6 @@ int glkunix_startup_code(glkunix_startup_t *data)
     } 
     return TRUE;
 }
-
-
 
 void glk_main()
 {
