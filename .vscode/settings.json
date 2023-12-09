@@ -3,8 +3,5 @@
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": true
       },
-      "files.associations": {
-        "glk.h": "c",
-        "glkstart.h": "c"
-      }
+      "cmake.sourceDirectory": "${workspaceFolder}/glkclient"
 }

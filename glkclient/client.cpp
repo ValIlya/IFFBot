@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdexcept>
 #include <string>
+#include <iostream>
 
 #ifdef __cplusplus
 extern "C"
@@ -16,13 +17,17 @@ extern "C"
 #endif
 
 glkunix_argumentlist_t glkunix_arguments[] = {
-    { NULL, glkunix_arg_End }
+	{ const_cast<char *>(""), glkunix_arg_ValueFollows, const_cast<char *>("filename: The game file to load.") },
+    { NULL, glkunix_arg_End, NULL }
 };
 
 int glkunix_startup_code(glkunix_startup_t *data)
 {
-    auto game = const_cast<char *>("../stories/LostPig.zblorb");
 
+    auto game = const_cast<char *>("");
+	if (data->argc == 2) {
+        game = const_cast<char *>(data->argv[1]);
+    }
     {
         giblorb_map_t *basemap;
 
