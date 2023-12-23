@@ -11,6 +11,7 @@
             "program": "${workspaceFolder}/glkclient/build/client",
             "args": ["${workspaceFolder}/stories/LostPig.zblorb"],
             "stopAtEntry": false,
+            "preLaunchTask": "configure-and-build",
             "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": false,
