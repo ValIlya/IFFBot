@@ -27,7 +27,7 @@ CHEAPGLK_OBJS =  \
 
 CHEAPGLK_HEADERS = cheapglk.h gi_dispa.h gi_debug.h
 
-all: $(GLKLIB) Make.cheapglk
+all: clean $(GLKLIB) Make.cheapglk
 
 cgunicod.o: cgunigen.c
 

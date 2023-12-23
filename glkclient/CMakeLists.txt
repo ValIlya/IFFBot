@@ -10,7 +10,22 @@ include_directories(cheapglk)  # Add the include directory
 
 add_executable(client client.cpp)
 
+add_library(cheapglk STATIC
+        cheapglk/cgfref.c
+        cheapglk/cggestal.c
+        cheapglk/cgmisc.c
+        cheapglk/cgstream.c
+        cheapglk/cgstyle.c
+        cheapglk/cgwindow.c
+        cheapglk/cgschan.c
+        cheapglk/cgdate.c
+        cheapglk/cgunicod.c
+        cheapglk/main.c
+        cheapglk/gi_dispa.c
+        cheapglk/gi_blorb.c
+        cheapglk/gi_debug.c
+        cheapglk/cgblorb.c
+)
+
 target_link_libraries(client PRIVATE cheapglk)  
-target_include_directories(client PRIVATE cheapglk) 
-target_link_directories(client PRIVATE cheapglk)
 
