@@ -88,3 +88,26 @@ void glk_main()
         }
     }
 }
+
+int main(int argc, char *argv[])
+{
+    if (argc <= 1) {
+        std::cerr << "argv[1] is null, aborting\n";
+        std::exit(EXIT_FAILURE);
+    }
+
+    glkunix_startup_t startdata;
+    startdata.argc = argc;
+    startdata.argv = new char *[argc];
+    std::memcpy(startdata.argv, argv, argc * sizeof(char *));
+
+
+    if (!glkunix_startup_code(&startdata)) {
+        glk_exit();
+    }
+
+    glk_main();
+    glk_exit();
+
+    return 0;
+}
