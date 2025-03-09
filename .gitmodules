@@ -1,0 +1,3 @@
+[submodule "external/cheapglk"]
+	path = external/cheapglk
+	url = https://github.com/erkyrath/cheapglk
