@@ -14,17 +14,19 @@ endif()
 set( CMAKE_CXX_STANDARD 20 CACHE STRING "" FORCE )
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "" FORCE )
 
+# add_compile_definitions(TARGET_OS_MAC)
+
 add_executable( main )
 
 # for glk.h
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/cheapglk)
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/cheapglk)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/tglk)
 
-add_subdirectory( "external" )
+# add_subdirectory( "external" )
 add_subdirectory( "src" )
 add_subdirectory( "terps" )
 
 # Link the glk library to the main executable
 target_link_libraries(main PRIVATE glk)
-
 
 set_target_properties( main PROPERTIES OUTPUT_NAME ${CMAKE_PROJECT_NAME} )
